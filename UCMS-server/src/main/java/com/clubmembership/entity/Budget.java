@@ -15,7 +15,7 @@ public class Budget {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ida;
+    private int id;
 
     private double amount;
 
