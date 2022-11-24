@@ -5,11 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ClubCreateRequest {
+@NoArgsConstructor
+public class BudgetResponse {
 
-    private String name;
+    private int id;
 
-    private int clubAdminId;
+    private double amount;
 }

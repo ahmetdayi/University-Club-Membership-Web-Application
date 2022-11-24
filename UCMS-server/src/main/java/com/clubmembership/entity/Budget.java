@@ -17,7 +17,7 @@ public class Budget {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String amount;
+    private double amount;
 
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Club club;

@@ -2,7 +2,7 @@ package com.clubmembership.service;
 
 import com.clubmembership.core.exception.MemberAlreadyEnrollEvent;
 import com.clubmembership.core.exception.MemberDoesntEnrollEventYetException;
-import com.clubmembership.core.exception.constant.Constant;
+import com.clubmembership.core.constant.Constant;
 import com.clubmembership.entity.EnrollEvent;
 import com.clubmembership.entity.dto.CreateEnrollEventRequest;
 import com.clubmembership.entity.dto.DeleteEnrollEventRequest;
@@ -23,20 +23,21 @@ public class EnrollEventService {
 
     private final EventService eventService;
 
-    public List<EnrollEvent> getAll(int memberId){
+    public List<EnrollEvent> getAll(int eventId){
 
         return enrollEventRepo.
-                getByMember_Id(memberService.getById(memberId).getId()).orElseThrow(
+                getByEvent_Id(eventService.getById(eventId).getId()).orElseThrow(
                         ()-> new MemberDoesntEnrollEventYetException(Constant.MEMBER_DOESNT_ENROLL_EVENT_YET));
     }
 
-    public void enroll(CreateEnrollEventRequest request){
+    public EnrollEvent enroll(CreateEnrollEventRequest request){
 
         eventMemberControl(request.getEventId(),request.getMemberId());
+
         EnrollEvent enrollEvent = new EnrollEvent(
                 memberService.getById(request.getMemberId()),eventService.getById(request.getEventId()));
 
-        enrollEventRepo.save(enrollEvent);
+        return enrollEventRepo.save(enrollEvent);
 
     }
 
@@ -44,7 +45,7 @@ public class EnrollEventService {
         Optional<EnrollEvent> byMember_idAndEvent_id = enrollEventRepo.getByMember_IdAndEvent_Id(
                 memberService.getById(request.getMemberId()).getId(),
                 eventService.getById(request.getEventId()).getId());
-        byMember_idAndEvent_id.ifPresent(enrollEvent-> enrollEventRepo.deleteById(enrollEvent.getId()));
+        byMember_idAndEvent_id.ifPresent(enrolledEvent-> enrollEventRepo.deleteById(enrolledEvent.getId()));
     }
 
     private void eventMemberControl(int eventId, int memberId) {

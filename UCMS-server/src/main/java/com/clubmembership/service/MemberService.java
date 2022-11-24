@@ -1,9 +1,8 @@
 package com.clubmembership.service;
 
-import com.clubmembership.core.exception.ClubHasntMemberYetException;
 import com.clubmembership.core.exception.MemberAlreadyExistException;
 import com.clubmembership.core.exception.MemberDoesntExistException;
-import com.clubmembership.core.exception.constant.Constant;
+import com.clubmembership.core.constant.Constant;
 import com.clubmembership.entity.Member;
 import com.clubmembership.entity.dto.CreateMemberRequest;
 import com.clubmembership.entity.dto.UpdateMemberRequest;
@@ -11,8 +10,6 @@ import com.clubmembership.repository.MemberRepo;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @Service

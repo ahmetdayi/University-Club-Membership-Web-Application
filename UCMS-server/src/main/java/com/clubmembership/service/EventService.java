@@ -5,9 +5,8 @@ import com.clubmembership.core.exception.CLubAlreadyArrangeEventAtTimeException;
 import com.clubmembership.core.exception.ClubDoesntArrangeEventYetException;
 import com.clubmembership.core.exception.EventDoesntExistException;
 import com.clubmembership.core.exception.EventPlaceDoesntEmpty;
-import com.clubmembership.core.exception.constant.Constant;
+import com.clubmembership.core.constant.Constant;
 import com.clubmembership.entity.Event;
-import com.clubmembership.entity.Member;
 import com.clubmembership.entity.dto.CreateEventRequest;
 import com.clubmembership.entity.dto.UpdateEventRequest;
 import com.clubmembership.repository.EventRepo;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -32,7 +30,8 @@ public class EventService {
                 ()->new ClubDoesntArrangeEventYetException(Constant.CLUB_DOESNT_ARRANGE_EVENT_YET));
     }
     public Event create(CreateEventRequest request){
-        Event event = new Event(request.getName(),request.getDate(),request.getEventPlace(),clubService.findById(request.getClubId()));
+        Event event = new Event(
+                request.getName(),request.getDate(),request.getEventPlace(),clubService.findById(request.getClubId()));
         dateControl(request.getDate());
         eventPlaceControl(request.getDate(),request.getEventPlace());
         return eventRepo.save(event);

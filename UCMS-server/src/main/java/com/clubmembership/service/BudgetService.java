@@ -1,7 +1,7 @@
 package com.clubmembership.service;
 
 import com.clubmembership.core.exception.BudgetDoesntExist;
-import com.clubmembership.core.exception.constant.Constant;
+import com.clubmembership.core.constant.Constant;
 import com.clubmembership.entity.Budget;
 import com.clubmembership.entity.dto.UpdateBudgetRequest;
 import com.clubmembership.repository.BudgetRepo;
@@ -20,12 +20,11 @@ public class BudgetService {
         return budgetRepo.save(budget);
     }
 
-    public void update(UpdateBudgetRequest request){
+    public Budget update(UpdateBudgetRequest request){
         Budget budget = findById(request.getBudgetId());
-        String amount = String.valueOf((Integer.parseInt(budget.getAmount())+ request.getBalance()));
+        double amount = budget.getAmount()+ request.getBalance();
         budget.setAmount(amount);
-        budgetRepo.save(budget);
-
+       return budgetRepo.save(budget);
     }
 
     public Budget getById(int id){

@@ -23,8 +23,11 @@ public class Club {
     @OneToOne(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Budget budget;
 
-    @OneToOne(mappedBy = "club", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne( cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn
     private Member member;
+
+
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> events;

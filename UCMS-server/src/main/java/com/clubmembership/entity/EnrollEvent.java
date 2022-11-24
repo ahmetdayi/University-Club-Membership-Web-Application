@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 public class EnrollEvent {
 

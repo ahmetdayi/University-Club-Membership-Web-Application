@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public interface ClubRepo extends JpaRepository<Club,Integer> {
    Optional<Club> findByNameIgnoreCase(String name);
-   Optional<Club> findByMember_Id(int id);
+   Optional<Club> findByMember_Id(int memberId);
+
+   List<Club> findByIdIn(List<Integer> clubId);
 
 
 }

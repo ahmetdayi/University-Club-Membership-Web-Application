@@ -1,4 +1,4 @@
-package com.clubmembership.core.exception.constant;
+package com.clubmembership.core.constant;
 
 public class Constant {
     public static final String CLUB_DOESNT_EXIST = "Club Doesn't Exist.";
@@ -15,5 +15,6 @@ public class Constant {
     public static final String MEMBER_ALREADY_EXİST = "Member Already Exist.";
     public static final String MEMBER_ALREADY_ENROLL_CLUB = "Member Already Enroll Club.";
     public static final String MEMBER_DOESNT_ENROLL_EVENT_YET = "Member Doesn't Enroll Event yet.";
+    public static final String SPONSOR_DOESNT_EXIST = "Sponsor Doesn't Exist.";
     public static String MEMBER_ALREADY_ENROLL_Event = "Member Already Enroll Event.";
 }

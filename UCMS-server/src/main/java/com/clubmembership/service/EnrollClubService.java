@@ -2,9 +2,9 @@ package com.clubmembership.service;
 
 import com.clubmembership.core.exception.ClubHasntMemberYetException;
 import com.clubmembership.core.exception.MemberAlreadyEnrollClubException;
-import com.clubmembership.core.exception.constant.Constant;
+import com.clubmembership.core.constant.Constant;
 import com.clubmembership.entity.EnrollClub;
-import com.clubmembership.entity.dto.CreateEnrollRequest;
+import com.clubmembership.entity.dto.CreateEnrollClubRequest;
 import com.clubmembership.entity.dto.DeleteEnrollClubRequest;
 import com.clubmembership.repository.EnrollClubRepo;
 import lombok.RequiredArgsConstructor;
@@ -28,17 +28,19 @@ public class EnrollClubService {
                 ()-> new ClubHasntMemberYetException(Constant.CLUB_HAS_NOT_MEMBER_YET));
     }
 
-    public void enroll(CreateEnrollRequest request){
+    public EnrollClub enroll(CreateEnrollClubRequest request){
         clubMemberControl(request.getMemberId(),request.getClubId());
+
         EnrollClub enrollClub = new EnrollClub(
                 memberService.getById(request.getMemberId()),clubService.getById(request.getClubId()));
-        enrollClubRepo.save(enrollClub);
+
+         return enrollClubRepo.save(enrollClub);
     }
 
     public void deleteMemberInClub(DeleteEnrollClubRequest request){
         Optional<EnrollClub> byClub_idAndMember_id =
                 enrollClubRepo.getByClub_IdAndMember_Id(request.getClubId(), request.getMemberId());
-        byClub_idAndMember_id.ifPresent(enrollClub -> enrollClubRepo.deleteById(enrollClub.getId()));
+        byClub_idAndMember_id.ifPresent(enrolledClub -> enrollClubRepo.deleteById(enrolledClub.getId()));
     }
 
     private void clubMemberControl(int memberId, int clubId) {

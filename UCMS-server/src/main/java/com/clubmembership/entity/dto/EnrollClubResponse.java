@@ -1,20 +1,15 @@
 package com.clubmembership.entity.dto;
 
-import com.clubmembership.entity.Budget;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class ClubResponse {
+public class EnrollClubResponse {
 
     private int id;
-
-    private String name;
-
-    private Budget budget;
 
     private MemberResponse member;
 }
