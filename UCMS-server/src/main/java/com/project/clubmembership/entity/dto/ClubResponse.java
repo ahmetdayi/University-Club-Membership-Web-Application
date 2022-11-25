@@ -1,6 +1,5 @@
 package com.project.clubmembership.entity.dto;
 
-import com.project.clubmembership.entity.Budget;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
