@@ -2,7 +2,7 @@ package com.project.clubmembership.service;
 
 import com.project.clubmembership.core.exception.ClubDoesntExistException;
 import com.project.clubmembership.core.exception.ClubIsAlreadyExistException;
-import com.project.clubmembership.core.exception.MemberAlreadyCreateClub;
+import com.project.clubmembership.core.exception.MemberAlreadyCreateClubException;
 import com.project.clubmembership.core.constant.Constant;
 import com.project.clubmembership.entity.Budget;
 import com.project.clubmembership.entity.Club;
@@ -59,7 +59,7 @@ public class ClubService {
 
     private void clubAdminAlreadyCreateClub(int clubAdminId) {
         if(clubRepo.findByMember_Id(clubAdminId).isPresent()){
-            throw new MemberAlreadyCreateClub(Constant.MEMBER_ALREADY_CREATE_CLUB);
+            throw new MemberAlreadyCreateClubException(Constant.MEMBER_ALREADY_CREATE_CLUB);
         }
     }
 

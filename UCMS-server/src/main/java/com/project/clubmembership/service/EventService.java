@@ -4,7 +4,7 @@ package com.project.clubmembership.service;
 import com.project.clubmembership.core.exception.CLubAlreadyArrangeEventAtTimeException;
 import com.project.clubmembership.core.exception.ClubDoesntArrangeEventYetException;
 import com.project.clubmembership.core.exception.EventDoesntExistException;
-import com.project.clubmembership.core.exception.EventPlaceDoesntEmpty;
+import com.project.clubmembership.core.exception.EventPlaceDoesntEmptyException;
 import com.project.clubmembership.core.constant.Constant;
 import com.project.clubmembership.entity.Event;
 import com.project.clubmembership.entity.dto.CreateEventRequest;
@@ -58,7 +58,7 @@ public class EventService {
 
     private void eventPlaceControl(LocalDateTime dateTime,String eventPlace) {
         if(eventRepo.getByDatetimeAndEventPlace(dateTime,eventPlace).isPresent()){
-            throw new EventPlaceDoesntEmpty(Constant.EVENT_PLACE_DOESNT_EMPTY);
+            throw new EventPlaceDoesntEmptyException(Constant.EVENT_PLACE_DOESNT_EMPTY);
         }
 
     }

@@ -1,6 +1,6 @@
 package com.project.clubmembership.service;
 
-import com.project.clubmembership.core.exception.MemberAlreadyEnrollEvent;
+import com.project.clubmembership.core.exception.MemberAlreadyEnrollEventException;
 import com.project.clubmembership.core.exception.MemberDoesntEnrollEventYetException;
 import com.project.clubmembership.core.constant.Constant;
 import com.project.clubmembership.entity.EnrollEvent;
@@ -53,7 +53,7 @@ public class EnrollEventService {
                 memberService.getById(memberId).getId(), eventService.getById(eventId).getId());
 
         if(byMember_idAndEvent_id.isPresent()){
-            throw new MemberAlreadyEnrollEvent(Constant.MEMBER_ALREADY_ENROLL_Event);
+            throw new MemberAlreadyEnrollEventException(Constant.MEMBER_ALREADY_ENROLL_Event);
         }
     }
 }

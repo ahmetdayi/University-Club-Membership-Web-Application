@@ -1,6 +1,6 @@
 package com.project.clubmembership.service;
 
-import com.project.clubmembership.core.exception.BudgetDoesntExist;
+import com.project.clubmembership.core.exception.BudgetDoesntExistException;
 import com.project.clubmembership.core.constant.Constant;
 import com.project.clubmembership.entity.Budget;
 import com.project.clubmembership.entity.dto.UpdateBudgetRequest;
@@ -32,6 +32,6 @@ public class BudgetService {
     }
 
     private Budget findById(int id){
-        return budgetRepo.findById(id).orElseThrow(()->new BudgetDoesntExist(Constant.BUDGET_DOESNT_EXIST));
+        return budgetRepo.findById(id).orElseThrow(()->new BudgetDoesntExistException(Constant.BUDGET_DOESNT_EXIST));
     }
 }
