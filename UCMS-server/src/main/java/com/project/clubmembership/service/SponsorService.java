@@ -8,6 +8,7 @@ import com.project.clubmembership.entity.dto.CreateSponsorRequest;
 import com.project.clubmembership.repository.SponsorRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public class SponsorService {
 
     private final SponsorRepo sponsorRepo;
 
+    private final ImageService imageService;
+
     public List<Sponsor> getAll(List<Integer> clubId){
       return sponsorRepo.findByClubs_IdIn(clubId);
     }
@@ -29,12 +32,18 @@ public class SponsorService {
         return sponsorRepo.save(sponsor);
     }
 
-    private Sponsor findById(int id){
-        return sponsorRepo.findById(id).orElseThrow(()-> new SponsorDoesntExistException(Constant.SPONSOR_DOESNT_EXIST));
+    public Sponsor addSponsorPhoto(MultipartFile multipartFile,int id){
+        Sponsor sponsor = findById(id);
+        sponsor.setImage(imageService.addImage(multipartFile));
+        return sponsorRepo.save(sponsor);
     }
 
     public void delete(int id){
         sponsorRepo.deleteById(findById(id).getId());
+    }
+
+    private Sponsor findById(int id){
+        return sponsorRepo.findById(id).orElseThrow(()-> new SponsorDoesntExistException(Constant.SPONSOR_DOESNT_EXIST));
     }
 
 }

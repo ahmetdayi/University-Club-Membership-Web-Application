@@ -1,6 +1,8 @@
 package com.project.clubmembership.entity.converter;
 
+
 import com.project.clubmembership.entity.Sponsor;
+import com.project.clubmembership.entity.dto.ImageResponse;
 import com.project.clubmembership.entity.dto.SponsorResponse;
 import org.springframework.stereotype.Component;
 
@@ -22,5 +24,17 @@ public class SponsorConverter {
                         sponsor.getId(),
                         sponsor.getCompanyName()
                 )).collect(Collectors.toList());
+    }
+
+    public ImageResponse convertImage(Sponsor from){
+        return new ImageResponse(from.getImage().getImageId(), from.getImage().getUrl());
+    }
+
+    public List<ImageResponse> convertImage(List<Sponsor> fromList){
+        if (fromList == null){
+            return null;
+        }
+        return fromList.stream().map(from->new ImageResponse(from.getImage().getImageId(), from.getImage().getUrl()))
+                .collect(Collectors.toList());
     }
 }

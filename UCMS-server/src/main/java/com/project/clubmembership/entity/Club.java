@@ -31,9 +31,12 @@ public class Club {
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> events;
 
-    //delete yaptıgımda enroll clubın ıcınde ılıskılendırdıgım her sey sılınıyor.
+
     @OneToMany(mappedBy = "club", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private List<EnrollClub> enrollClubs;
+
+    @OneToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    private Image image;
 
     public Club(String name, Budget budget, Member member) {
         this.name = name;

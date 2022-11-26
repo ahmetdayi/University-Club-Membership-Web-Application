@@ -11,6 +11,7 @@ import com.project.clubmembership.entity.dto.CreateClubRequest;
 import com.project.clubmembership.repository.ClubRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class ClubService {
     private final ClubRepo clubRepo;
     private final BudgetService budgetService;
     private final MemberService memberService;
+
+    private final ImageService imageService;
 
 
     public List<Club> getAll(){
@@ -45,6 +48,12 @@ public class ClubService {
     }
     public void deleteById(int id){
         clubRepo.deleteById(findById(id).getId());
+    }
+
+    public Club addClubPhoto(MultipartFile multipartFile,int id){
+        Club club = getById(id);
+        club.setImage(imageService.addImage(multipartFile));
+        return clubRepo.save(club);
     }
 
     protected List<Club> getByIdIn(List<Integer> id){

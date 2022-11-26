@@ -10,6 +10,7 @@ import com.project.clubmembership.repository.MemberRepo;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepo memberRepo;
+
+    private final ImageService imageService;
+
 
     protected Member findById(int id){
         return memberRepo.findById(id).orElseThrow(()->new MemberDoesntExistException(Constant.MEMBER_DOESNT_EXIST));
@@ -62,9 +66,15 @@ public class MemberService {
 
     }
 
+    public Member addProfilPhoto(MultipartFile multipartFile,int id){
+        Member member = getById(id);
+        member.setImage(imageService.addImage(multipartFile));
+       return memberRepo.save(member);
+    }
+
     private void emailControl(String email) {
         if(memberRepo.getByEmail(email).isPresent()){
-            throw new MemberAlreadyExistException(Constant.MEMBER_ALREADY_EXİST);
+            throw new MemberAlreadyExistException(Constant.MEMBER_ALREADY_EXIST);
         }
 
     }

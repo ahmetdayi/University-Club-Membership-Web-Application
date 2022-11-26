@@ -26,6 +26,9 @@ public class Sponsor {
     )
     private List<Club> clubs;
 
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    private Image image;
+
     public Sponsor(String companyName, List<Club> clubs) {
         this.companyName = companyName;
         this.clubs = clubs;

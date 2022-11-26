@@ -1,7 +1,9 @@
 package com.project.clubmembership.entity.converter;
 
 import com.project.clubmembership.entity.Club;
+
 import com.project.clubmembership.entity.dto.ClubResponse;
+import com.project.clubmembership.entity.dto.ImageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -32,5 +34,17 @@ public class ClubConverter {
                        budgetConverter.convert(club.getBudget()),
                        memberConverter.convert( club.getMember())
                )).collect(Collectors.toList());
+    }
+
+    public ImageResponse convertImage(Club from){
+        return new ImageResponse(from.getImage().getImageId(), from.getImage().getUrl());
+    }
+
+    public List<ImageResponse> convertImage(List<Club> fromList){
+        if (fromList == null){
+            return null;
+        }
+        return fromList.stream().map(from->new ImageResponse(from.getImage().getImageId(), from.getImage().getUrl()))
+                .collect(Collectors.toList());
     }
 }

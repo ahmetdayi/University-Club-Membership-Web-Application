@@ -3,12 +3,15 @@ package com.project.clubmembership.controller;
 import com.project.clubmembership.entity.converter.ClubConverter;
 import com.project.clubmembership.entity.dto.CreateClubRequest;
 import com.project.clubmembership.entity.dto.ClubResponse;
+import com.project.clubmembership.entity.dto.ImageResponse;
 import com.project.clubmembership.service.ClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,6 +38,13 @@ public class ClubController {
     @PostMapping
     public ResponseEntity<ClubResponse> create(@RequestBody CreateClubRequest request){
         return new ResponseEntity<>(clubConverter.convert(clubService.create(request)),HttpStatus.CREATED);
+    }
+
+    @PostMapping("/addImage")
+    public ResponseEntity<ImageResponse> addImage(@Valid @RequestParam("file") MultipartFile multipartFile,
+                                                  @Valid @RequestParam("id") int id){
+        return new ResponseEntity<>(clubConverter.convertImage
+                (clubService.addClubPhoto(multipartFile, id)),HttpStatus.CREATED);
     }
 
     @DeleteMapping

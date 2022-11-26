@@ -44,6 +44,9 @@ public class Member {
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "member")
     private Club club;
 
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Image image;
+
     public Member(String firstName, String lastName, String gender, String email, String password, String passwordMatch, String department) {
         this.firstName = firstName;
         this.lastName = lastName;
