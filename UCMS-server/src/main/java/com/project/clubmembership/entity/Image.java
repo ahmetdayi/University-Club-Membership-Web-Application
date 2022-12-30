@@ -3,31 +3,35 @@ package com.project.clubmembership.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Document
 public class Image {
 
+    public static final String SEQUENCE_NAME="image_sequence";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int imageId;
 
     private String url;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE,mappedBy = "image")
+    @DocumentReference(collection = "club",lazy = true)
     private Club club;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE,mappedBy = "image")
+    @DocumentReference(collection = "sponsor",lazy = true)
     private Sponsor sponsor;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE,mappedBy = "image")
+    @DocumentReference(collection = "member",lazy = true)
     private Member member;
 
-    public Image(String url) {
+    public Image(int id,String url) {
         this.url = url;
+        this.imageId=id;
     }
 }

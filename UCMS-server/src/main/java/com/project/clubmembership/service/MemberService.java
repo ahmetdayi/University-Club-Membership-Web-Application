@@ -21,6 +21,8 @@ public class MemberService {
 
     private final ImageService imageService;
 
+    private final SequenceGeneratorService sequenceGeneratorService;
+
 
     protected Member findById(int id){
         return memberRepo.findById(id).orElseThrow(()->new MemberDoesntExistException(Constant.MEMBER_DOESNT_EXIST));
@@ -38,6 +40,7 @@ public class MemberService {
 
         Member member = new Member
                 (
+                        sequenceGeneratorService.getSequenceNumber(Member.SEQUENCE_NAME),
                         request.getFirstName(),
                         request.getLastName(),
                         request.getGender(),

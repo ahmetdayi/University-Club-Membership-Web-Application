@@ -3,28 +3,26 @@ package com.project.clubmembership.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import javax.persistence.*;
 
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity
+@Document
 public class EnrollEvent {
 
+    public static final String SEQUENCE_NAME="enrollEvent_sequence";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
-    @JoinColumn
+    @DocumentReference(collection = "member",lazy = true)
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @DocumentReference(collection = "event",lazy = true)
     private Event event;
 
-    public EnrollEvent(Member member, Event event) {
-        this.member = member;
-        this.event = event;
-    }
 }

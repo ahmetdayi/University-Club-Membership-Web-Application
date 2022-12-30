@@ -26,6 +26,8 @@ public class ClubService {
 
     private final ImageService imageService;
 
+    private final SequenceGeneratorService sequenceGeneratorService;
+
 
     public List<Club> getAll(){
         return clubRepo.findAll();
@@ -43,7 +45,14 @@ public class ClubService {
         clubIsAlreadyExist(createClubRequest.getName());
         clubAdminAlreadyCreateClub(createClubRequest.getClubAdminId());
         Member clubAdmin = memberService.getById(createClubRequest.getClubAdminId());
-        Club club = new Club(createClubRequest.getName(),budget,clubAdmin);
+        Club club = new Club
+                (
+                        sequenceGeneratorService.getSequenceNumber(Club.SEQUENCE_NAME),
+                        createClubRequest.getName(),
+                        budget,
+                        clubAdmin
+                );
+        budget.setClub(club);
         return clubRepo.save(club);
     }
     public void deleteById(int id){

@@ -3,34 +3,35 @@ package com.project.clubmembership.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import javax.persistence.*;
+
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Document
 public class Sponsor {
 
+
+    public static final String SEQUENCE_NAME="sponsor_sequence";
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String companyName;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
-    @JoinTable(
-            joinColumns = @JoinColumn,
-            inverseJoinColumns = @JoinColumn
-    )
+    @DocumentReference(collection = "club",lazy = true)
     private List<Club> clubs;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @DocumentReference(collection = "image",lazy = true)
     private Image image;
 
-    public Sponsor(String companyName, List<Club> clubs) {
+    public Sponsor(int id,String companyName, List<Club> clubs) {
         this.companyName = companyName;
         this.clubs = clubs;
+        this.id=id;
     }
 }

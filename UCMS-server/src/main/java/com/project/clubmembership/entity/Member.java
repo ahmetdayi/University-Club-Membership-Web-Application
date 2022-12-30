@@ -3,19 +3,22 @@ package com.project.clubmembership.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import javax.persistence.*;
 import java.util.List;
 
 
-@Entity
+@Document
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member {
 
+    public static final String SEQUENCE_NAME="member_sequence";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String firstName;
@@ -32,22 +35,22 @@ public class Member {
 
     private String department;
 
-    @Enumerated(EnumType.STRING)
+
     private Role role;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE,mappedBy = "member")
+    @DocumentReference(collection = "enrollClub",lazy = true)
     private List<EnrollClub> enrollClubs;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE,mappedBy = "member")
+
     private List<EnrollEvent> enrollEvents;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "member")
+
     private Club club;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+
     private Image image;
 
-    public Member(String firstName, String lastName, String gender, String email, String password, String passwordMatch, String department) {
+    public Member(int id,String firstName, String lastName, String gender, String email, String password, String passwordMatch, String department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
@@ -55,5 +58,6 @@ public class Member {
         this.password = password;
         this.passwordMatch = passwordMatch;
         this.department = department;
+        this.id=id;
     }
 }

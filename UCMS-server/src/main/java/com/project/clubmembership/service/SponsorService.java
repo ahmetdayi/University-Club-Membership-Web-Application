@@ -22,28 +22,35 @@ public class SponsorService {
 
     private final ImageService imageService;
 
-    public List<Sponsor> getAll(List<Integer> clubId){
-      return sponsorRepo.findByClubs_IdIn(clubId);
+    private final SequenceGeneratorService sequenceGeneratorService;
+
+    public List<Sponsor> getAll(List<Integer> clubId) {
+        return sponsorRepo.findByClubs_IdIn(clubId);
     }
 
-    public Sponsor create(CreateSponsorRequest request){
+    public Sponsor create(CreateSponsorRequest request) {
         List<Club> byIdIn = clubService.getByIdIn(request.getClubId());
-        Sponsor sponsor = new Sponsor(request.getName(), byIdIn);
+        Sponsor sponsor = new Sponsor
+                (
+                        sequenceGeneratorService.getSequenceNumber(Sponsor.SEQUENCE_NAME),
+                        request.getName(),
+                        byIdIn
+                );
         return sponsorRepo.save(sponsor);
     }
 
-    public Sponsor addSponsorPhoto(MultipartFile multipartFile,int id){
+    public Sponsor addSponsorPhoto(MultipartFile multipartFile, int id) {
         Sponsor sponsor = findById(id);
         sponsor.setImage(imageService.addImage(multipartFile));
         return sponsorRepo.save(sponsor);
     }
 
-    public void delete(int id){
+    public void delete(int id) {
         sponsorRepo.deleteById(findById(id).getId());
     }
 
-    private Sponsor findById(int id){
-        return sponsorRepo.findById(id).orElseThrow(()-> new SponsorDoesntExistException(Constant.SPONSOR_DOESNT_EXIST));
+    private Sponsor findById(int id) {
+        return sponsorRepo.findById(id).orElseThrow(() -> new SponsorDoesntExistException(Constant.SPONSOR_DOESNT_EXIST));
     }
 
 }

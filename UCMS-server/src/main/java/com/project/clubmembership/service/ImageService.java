@@ -12,26 +12,31 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ImageService  {
+public class ImageService {
 
     private final ImageRepo imageRepo;
     private final CloudStorageService cloudStorageService;
 
+    private final SequenceGeneratorService sequenceGeneratorService;
 
-    protected Image getImageByImageId(int imageId){
+
+    protected Image getImageByImageId(int imageId) {
         return imageRepo.findById(imageId).orElseThrow(() -> new ImageNotFoundException(Constant.IMAGE_NOT_FOUND));
     }
 
-//bır tane AddImageClub vb sınıfı olustur .veya nasıl null deger dondurmeyecegını coz
+    //bır tane AddImageClub vb sınıfı olustur .veya nasıl null deger dondurmeyecegını coz
     protected Image addImage
-            (MultipartFile multipartFile)
-    {
-        Map<?,?> upload = cloudStorageService.upload(multipartFile);
-        Image image = new Image(upload.get("url").toString());
+    (MultipartFile multipartFile) {
+        Map<?, ?> upload = cloudStorageService.upload(multipartFile);
+        Image image = new Image
+                (
+                        sequenceGeneratorService.getSequenceNumber(Image.SEQUENCE_NAME),
+                        upload.get("url").toString()
+                );
         return imageRepo.save(image);
     }
 
-    public void deleteImageByImageId(int imageId){
+    public void deleteImageByImageId(int imageId) {
         imageRepo.deleteById(getImageByImageId(imageId).getImageId());
     }
 

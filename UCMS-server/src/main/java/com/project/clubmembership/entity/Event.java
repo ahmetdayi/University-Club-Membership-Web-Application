@@ -4,20 +4,24 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
+@Document
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Event {
 
+
+    public static final String SEQUENCE_NAME="event_sequence";
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
@@ -27,17 +31,17 @@ public class Event {
 
     private String eventPlace;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn
+    @DocumentReference(collection = "club",lazy = true)
     private Club club;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "event")
+    @DocumentReference(collection = "enrollEvent",lazy = true)
     private List<EnrollEvent> enrollEvents;
 
-    public Event(String name, LocalDateTime datetime,String eventPlace,Club club) {
+    public Event(int id,String name, LocalDateTime datetime,String eventPlace,Club club) {
         this.name = name;
         this.datetime = datetime;
         this.club=club;
         this.eventPlace=eventPlace;
+        this.id=id;
     }
 }

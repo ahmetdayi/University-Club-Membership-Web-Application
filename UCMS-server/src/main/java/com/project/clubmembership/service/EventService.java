@@ -6,6 +6,7 @@ import com.project.clubmembership.core.exception.ClubDoesntArrangeEventYetExcept
 import com.project.clubmembership.core.exception.EventDoesntExistException;
 import com.project.clubmembership.core.exception.EventPlaceDoesntEmptyException;
 import com.project.clubmembership.core.constant.Constant;
+import com.project.clubmembership.entity.Club;
 import com.project.clubmembership.entity.Event;
 import com.project.clubmembership.entity.dto.CreateEventRequest;
 import com.project.clubmembership.entity.dto.UpdateEventRequest;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+
 import java.util.List;
 
 
@@ -24,24 +26,35 @@ public class EventService {
 
     private final ClubService clubService;
 
+    private final SequenceGeneratorService sequenceGeneratorService;
 
-    public List<Event> getAll(int clubId){
-       return eventRepo.getByClub_Id(clubId).orElseThrow(
-                ()->new ClubDoesntArrangeEventYetException(Constant.CLUB_DOESNT_ARRANGE_EVENT_YET));
+
+    public List<Event> getAll(int clubId) {
+        return eventRepo.getByClub_Id(clubId).orElseThrow(
+                () -> new ClubDoesntArrangeEventYetException(Constant.CLUB_DOESNT_ARRANGE_EVENT_YET));
     }
-    public Event create(CreateEventRequest request){
-        Event event = new Event(
-                request.getName(),request.getDatetime(),request.getEventPlace(),clubService.findById(request.getClubId()));
+
+    public Event create(CreateEventRequest request) {
+        Club club = clubService.findById(request.getClubId());
+        Event event = new Event
+                (
+                        sequenceGeneratorService.getSequenceNumber(Event.SEQUENCE_NAME),
+                        request.getName(),
+                        request.getDatetime(),
+                        request.getEventPlace(),
+                        club
+                );
         dateControl(request.getDatetime());
-        eventPlaceControl(request.getDatetime(),request.getEventPlace());
+        eventPlaceControl(request.getDatetime(), request.getEventPlace());
+        club.setEvents(List.of(event));
         return eventRepo.save(event);
     }
 
-    public void deleteById(int id){
+    public void deleteById(int id) {
         eventRepo.deleteById(findById(id).getId());
     }
 
-    public Event update(UpdateEventRequest request){
+    public Event update(UpdateEventRequest request) {
         Event event = findById(request.getId());
         event.setName(request.getName());
         event.setDatetime(request.getDateTime());
@@ -49,27 +62,27 @@ public class EventService {
         return eventRepo.save(event);
 
     }
-    public Event getById(int id){
+
+    public Event getById(int id) {
         return findById(id);
     }
-    private Event findById(int id){
-        return eventRepo.findById(id).orElseThrow(()->new EventDoesntExistException(Constant.EVENT_DOESNT_EXIST));
+
+    private Event findById(int id) {
+        return eventRepo.findById(id).orElseThrow(() -> new EventDoesntExistException(Constant.EVENT_DOESNT_EXIST));
     }
 
-    private void eventPlaceControl(LocalDateTime dateTime,String eventPlace) {
-        if(eventRepo.getByDatetimeAndEventPlace(dateTime,eventPlace).isPresent()){
+    private void eventPlaceControl(LocalDateTime dateTime, String eventPlace) {
+        if (eventRepo.getByDatetimeAndEventPlace(dateTime, eventPlace).isPresent()) {
             throw new EventPlaceDoesntEmptyException(Constant.EVENT_PLACE_DOESNT_EMPTY);
         }
 
     }
 
     private void dateControl(LocalDateTime date) {
-        if (eventRepo.getByDatetime(date).isPresent()){
+        if (eventRepo.getByDatetime(date).isPresent()) {
             throw new CLubAlreadyArrangeEventAtTimeException(Constant.CLUB_ALREADY_ARRANGE_EVENT_AT_TIME);
         }
     }
-
-
 
 
 }

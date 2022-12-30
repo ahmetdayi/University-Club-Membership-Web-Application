@@ -4,43 +4,46 @@ package com.project.clubmembership.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import javax.persistence.*;
+
 import java.util.List;
 
-@Entity
+@Document
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Club {
 
+    public static final String SEQUENCE_NAME="club_sequence";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
 
-    @OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @DocumentReference(collection = "budget",lazy = true)
     private Budget budget;
-
-    @OneToOne( cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn
+    @DocumentReference(collection = "member",lazy = true)
     private Member member;
 
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
     private List<Event> events;
 
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+
     private List<EnrollClub> enrollClubs;
 
-    @OneToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    @DocumentReference(collection = "image",lazy = true)
     private Image image;
 
-    public Club(String name, Budget budget, Member member) {
+    public Club(int id,String name, Budget budget, Member member) {
         this.name = name;
         this.budget = budget;
         this.member = member;
+        this.id=id;
     }
 }

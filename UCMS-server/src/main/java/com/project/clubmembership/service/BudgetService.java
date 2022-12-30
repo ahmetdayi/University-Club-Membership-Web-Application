@@ -13,10 +13,11 @@ import org.springframework.stereotype.Service;
 public class BudgetService {
 
     private final BudgetRepo budgetRepo;
+    private final SequenceGeneratorService sequenceGeneratorService;
 
 
     public Budget create(){
-        Budget budget = new Budget();
+        Budget budget = new Budget(sequenceGeneratorService.getSequenceNumber(Budget.SEQUENCE_NAME));
         return budgetRepo.save(budget);
     }
 

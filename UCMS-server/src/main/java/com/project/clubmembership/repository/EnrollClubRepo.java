@@ -1,11 +1,12 @@
 package com.project.clubmembership.repository;
 
 import com.project.clubmembership.entity.EnrollClub;
-import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-public interface EnrollClubRepo extends JpaRepository<EnrollClub,Integer> {
+public interface EnrollClubRepo extends MongoRepository<EnrollClub,Integer> {
 
     Optional<EnrollClub> getByClub_Id(int clubId);
 

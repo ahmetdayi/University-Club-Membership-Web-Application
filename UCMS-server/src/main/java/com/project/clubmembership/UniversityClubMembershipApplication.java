@@ -13,30 +13,30 @@ import org.springframework.context.annotation.Bean;
 
 
 @SpringBootApplication
-@SecurityScheme(
-		name = "Bearer Authentication",
-		type = SecuritySchemeType.HTTP,
-		bearerFormat = "JWT",
-		scheme = "bearer")
+//@SecurityScheme(
+//		name = "Bearer Authentication",
+//		type = SecuritySchemeType.HTTP,
+//		bearerFormat = "JWT",
+//		scheme = "bearer")
 public class UniversityClubMembershipApplication {
 
 
 	public static void main(String[] args) {
 		SpringApplication.run(UniversityClubMembershipApplication.class, args);
 	}
-	@Bean
-	public OpenAPI customizeOpenAPI() {
-		final String securitySchemeName = "bearerAuth";
-		return new OpenAPI()
-				.addSecurityItem(new SecurityRequirement()
-						.addList(securitySchemeName))
-				.components(new Components()
-						.addSecuritySchemes(securitySchemeName, new io.swagger.v3.oas.models.security.SecurityScheme()
-								.name(securitySchemeName)
-								.type(Type.HTTP)
-								.scheme("bearer")
-								.bearerFormat("JWT")));
-	}
+//	@Bean
+//	public OpenAPI customizeOpenAPI() {
+//		final String securitySchemeName = "bearerAuth";
+//		return new OpenAPI()
+//				.addSecurityItem(new SecurityRequirement()
+//						.addList(securitySchemeName))
+//				.components(new Components()
+//						.addSecuritySchemes(securitySchemeName, new io.swagger.v3.oas.models.security.SecurityScheme()
+//								.name(securitySchemeName)
+//								.type(Type.HTTP)
+//								.scheme("bearer")
+//								.bearerFormat("JWT")));
+//	}
 
 
 }
